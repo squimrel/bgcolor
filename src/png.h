@@ -15,14 +15,38 @@
 #ifndef SRC_PNG_H_
 #define SRC_PNG_H_
 
+#include <memory>  // std::unique_ptr
 #include <string>  // std::string
 #include <tuple>   // std::tuple
 
+extern "C" {
+#include <png.h>
+}
+
+#include "./src/utilities.h"
+
+/**
+ * Extra class for RAII.
+ */
+class PngData {
+ public:
+  png_structp structure;
+  png_infop info;
+
+  PngData();
+  ~PngData();
+};
+
 class Png {
  public:
+  std::unique_ptr<PngData> data;
+
   Png();
   void open(const std::string& filename);
   std::tuple<int, int, int, int> color(const int x, const int y) const;
+
+ private:
+  file_ptr file_;
 };
 
 #endif  // SRC_PNG_H_
