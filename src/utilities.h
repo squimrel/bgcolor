@@ -15,8 +15,12 @@
 #ifndef SRC_UTILITIES_H_
 #define SRC_UTILITIES_H_
 
-#include <sstream>  // std::ostringstream
-#include <string>   // std::string
+#include <cstdio>  // FILE
+
+#include <functional>  // std::function
+#include <memory>      // std::unique_ptr
+#include <sstream>     // std::ostringstream
+#include <string>      // std::string
 
 /**
  * This can for example output a double without trailing and leading zeros.
@@ -30,5 +34,11 @@ std::string from_stream(const T value) {
   const auto n = s.find("0.");
   return n == 0 ? s.substr(1) : s;
 }
+
+/**
+ * Open file using C for use with functions that need a FILE.
+ */
+using file_ptr = std::unique_ptr<FILE, std::function<void(FILE*)>>;
+file_ptr make_file(const std::string& filename);
 
 #endif  // SRC_UTILITIES_H_

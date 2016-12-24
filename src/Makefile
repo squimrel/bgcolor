@@ -1,16 +1,14 @@
-CC=g++
-CFLAGS=-I .. -std=c++14 -O3 -Wall -Wextra -Wpedantic -Wsign-conversion -c
+CC = g++
+CFLAGS = -I .. -std=c++14 -O3 -Wall -Wextra -Wpedantic -Wsign-conversion
+OBJECTS = main.o png.o utilities.o
 
 all: bgcolor
 
-bgcolor: main.o png.o
-	$(CC) main.o png.o -o bgcolor
+bgcolor: $(OBJECTS)
+	$(CC) $(OBJECTS) -o bgcolor
 
-main.o: main.cc
-	$(CC) $(CFLAGS) main.cc -o main.o
-
-png.o: png.cc
-	$(CC) $(CFLAGS) png.cc -o png.o
+%.o: %.cc
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm main.o png.o bgcolor
+	rm $(OBJECTS) bgcolor
