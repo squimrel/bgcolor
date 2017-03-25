@@ -38,7 +38,6 @@ int main(int argc, const char* argv[]) {
     png.open(filename);
   } catch (const std::runtime_error& err) {
     cerr << err.what();
-    // I'm not sure if interupting the control flow here is actually allowed.
     return 1;
   }
   int red;
