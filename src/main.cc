@@ -36,32 +36,32 @@ int main(int argc, const char* argv[]) {
   Png png;
   try {
     png.open(filename);
-    int red;
-    int green;
-    int blue;
-    double alpha;
-    std::tie(red, green, blue, alpha) = png.color(0, 0);
-    // Round to the nearset 0.05.
-    alpha = std::round((alpha / static_cast<double>(0xff)) * 20) / 20;
-    // This might not be used.
-    const string rgba = "rgba(" + to_string(red) + "," + to_string(green) +
-                        "," + to_string(blue) + "," + from_stream(alpha) +
-                        ")\n";
-    // Assume a white background color to generate a hex color.
-    if (alpha != 1) {
-      const int white = 0xff * (1 - alpha);
-      red = red * alpha + white;
-      green = green * alpha + white;
-      blue = blue * alpha + white;
-    }
-    cout << "#" << std::setfill('0') << std::hex << setw(2) << red << setw(2)
-         << blue << setw(2) << green << '\n';
-    if (png_get_channels(png.data->structure, png.data->info) == 4) {
-      cout << rgba;
-    }
   } catch (const std::runtime_error& err) {
     cerr << err.what();
     // I'm not sure if interupting the control flow here is actually allowed.
     return 1;
+  }
+  int red;
+  int green;
+  int blue;
+  double alpha;
+  std::tie(red, green, blue, alpha) = png.color(0, 0);
+  // Round to the nearset 0.05.
+  alpha = std::round((alpha / static_cast<double>(0xff)) * 20) / 20;
+  // This might not be used.
+  const string rgba = "rgba(" + to_string(red) + "," + to_string(green) +
+                      "," + to_string(blue) + "," + from_stream(alpha) +
+                      ")\n";
+  // Assume a white background color to generate a hex color.
+  if (alpha != 1) {
+    const int white = 0xff * (1 - alpha);
+    red = red * alpha + white;
+    green = green * alpha + white;
+    blue = blue * alpha + white;
+  }
+  cout << "#" << std::setfill('0') << std::hex << setw(2) << red << setw(2)
+       << blue << setw(2) << green << '\n';
+  if (png_get_channels(png.data->structure, png.data->info) == 4) {
+    cout << rgba;
   }
 }
